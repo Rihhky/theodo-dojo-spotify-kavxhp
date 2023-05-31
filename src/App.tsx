@@ -30,8 +30,6 @@ const App = () => {
     queryKey: ['tracks'],
     queryFn: fetchTracks,
   });
-  var track1 = tracks[0].track.name;
-  var track2 = tracks[1].track.name;
 
   return (
     <div className="App">
@@ -45,16 +43,18 @@ const App = () => {
         )}
       </div>
       <div className="App-buttons"></div>
-      {tracks !== undefined && tracks[trackIndex] !== undefined && (
+      {tracks !== undefined && tracks[trackIndex] !== undefined ? (
         <div>
           <audio src={tracks[trackIndex].track.preview_url} autoPlay controls />
           <span>{tracks[trackIndex].track.name}</span>
+          <button onClick={goToNextTrack}>Next track</button>
+          <button onclick={() => checkAnswer(track1, trackName)}>
+            {tracks[trackIndex].track.name}
+          </button>
         </div>
+      ) : (
+        <div> Loading </div>
       )}
-      <button onClick={goToNextTrack}>Next track</button>
-      <button>{track1}</button>
-      <button>{track2}</button>
-      <button>{tracks[trackIndex].track.name}</button>
     </div>
   );
 };
