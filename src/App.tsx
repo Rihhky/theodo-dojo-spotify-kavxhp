@@ -19,16 +19,20 @@ const AlbumCover = ({ track }: { track: SavedTrack }) => {
 };
 const App = () => {
   const [trackIndex, setTrackIndex] = useState(0);
+  const [trackName, setTrackName] = useState(0);
 
   const goToNextTrack = () => {
     setTrackIndex(trackIndex + 1);
+    setTrackName(tracks[trackIndex].track.name);
   };
+
   const { data: tracks } = useQuery({
     queryKey: ['tracks'],
     queryFn: fetchTracks,
   });
-  console.log(tracks);
-  var currentTrack = tracks[trackIndex];
+  var track1 = tracks[0].track.name;
+  var track2 = tracks[1].track.name;
+
   return (
     <div className="App">
       <header className="App-header">
@@ -36,8 +40,9 @@ const App = () => {
         <h1 className="App-title">Bienvenue sur le blind test de Noah</h1>
       </header>
       <div className="App-images">
-        <p>Il va falloir modifier le code pour faire un vrai blind test !</p>
-        <AlbumCover track={currentTrack} />
+        {tracks !== undefined && tracks[trackIndex] !== undefined && (
+          <AlbumCover track={tracks[trackIndex]} />
+        )}
       </div>
       <div className="App-buttons"></div>
       {tracks !== undefined && tracks[trackIndex] !== undefined && (
@@ -47,6 +52,9 @@ const App = () => {
         </div>
       )}
       <button onClick={goToNextTrack}>Next track</button>
+      <button>{track1}</button>
+      <button>{track2}</button>
+      <button>{tracks[trackIndex].track.name}</button>
     </div>
   );
 };
