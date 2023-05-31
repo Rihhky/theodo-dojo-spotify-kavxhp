@@ -13,8 +13,8 @@ const trackUrls = [
   'https://p.scdn.co/mp3-preview/ac28d1b0be285ed3bfd8e9fa5fad133776d7cf36',
 ];
 
-const AlbumCover = ( {track}: {track: SavedTrack} ) => {
-  const src = {track.album.images[0].url } ; // A changer ;)
+const AlbumCover = ({ track }: { track: SavedTrack }) => {
+  const src = track.track.album.images[0]!.url; // A changer ;)
   return <img src={src} style={{ width: 400, height: 400 }} />;
 };
 const App = () => {
@@ -28,7 +28,7 @@ const App = () => {
     queryFn: fetchTracks,
   });
   console.log(tracks);
-  var currentTrack = tracks[trackIndex].track;
+  var currentTrack = tracks[trackIndex];
   return (
     <div className="App">
       <header className="App-header">
