@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { fetchTracks } from './lib/fetchTracks';
 import { useQuery } from '@tanstack/react-query';
 import { SavedTrack } from 'spotify-types';
+import swal from 'sweetalert';
 
 const trackUrls = [
   'https://p.scdn.co/mp3-preview/742294f35af9390e799dd96c633788410a332e52',
@@ -19,17 +20,45 @@ const AlbumCover = ({ track }: { track: SavedTrack }) => {
 };
 const App = () => {
   const [trackIndex, setTrackIndex] = useState(0);
-  const [trackName, setTrackName] = useState(0);
 
   const goToNextTrack = () => {
     setTrackIndex(trackIndex + 1);
-    setTrackName(tracks[trackIndex].track.name);
   };
 
+  const checkAnswer = (t1, t2) => {
+    if (t1 == t2) {
+      swal('Bravo !', 'sous-titre', 'success');
+    } else {
+      swal('Raté !', 'Ceci est une alerte', 'error');
+    }
+  };
   const { data: tracks } = useQuery({
     queryKey: ['tracks'],
     queryFn: fetchTracks,
   });
+
+  if (tracks !== undefined && tracks[trackIndex] !== undefined) {
+    var track1 = tracks[trackIndex].track.name;
+    var track2 = tracks[0].track.name;
+    var track3 = tracks[1].track.name;
+  }
+
+  function arrayShuffle(a) {
+    var l = a.length,
+      t,
+      r;
+    while (0 !== l) {
+      r = Math.floor(Math.random() * l);
+      l -= 1;
+      t = a[l];
+      a[l] = a[r];
+      a[r] = t;
+    }
+    return a;
+  }
+
+  arrayShuffle([1, 2, 3]);
+  // renvoie par exemple : [3, 1, 2]
 
   return (
     <div className="App">
@@ -43,13 +72,26 @@ const App = () => {
         )}
       </div>
       <div className="App-buttons"></div>
+
       {tracks !== undefined && tracks[trackIndex] !== undefined ? (
         <div>
           <audio src={tracks[trackIndex].track.preview_url} autoPlay controls />
           <span>{tracks[trackIndex].track.name}</span>
           <button onClick={goToNextTrack}>Next track</button>
-          <button onclick={() => checkAnswer(track1, trackName)}>
-            {tracks[trackIndex].track.name}
+          <button
+            onClick={() => checkAnswer(track1, tracks[trackIndex]!.track.name)}
+          >
+            {track1}
+          </button>
+          <button
+            onClick={() => checkAnswer(track2, tracks[trackIndex]!.track.name)}
+          >
+            {track2}
+          </button>
+          <button
+            onClick={() => checkAnswer(track3, tracks[trackIndex]!.track.name)}
+          >
+            {track3}
           </button>
         </div>
       ) : (
