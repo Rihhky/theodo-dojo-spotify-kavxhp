@@ -20,7 +20,6 @@ const AlbumCover = ({ track }: { track: SavedTrack }) => {
 };
 const App = () => {
   const [trackIndex, setTrackIndex] = useState(0);
-  const [trackOrder, setTrackOrder] = useState(arrayShuffle());
 
   const goToNextTrack = () => {
     setTrackIndex(trackIndex + 1);
@@ -60,10 +59,12 @@ const App = () => {
     return l;
   };
 
+  const [trackOrder, setTrackOrder] = useState(arrayShuffle(Numbers(20)));
+
   if (tracks !== undefined && tracks[trackIndex] !== undefined) {
-    var track1 = tracks[trackIndex].track.name;
-    var track2 = tracks[0].track.name;
-    var track3 = tracks[1].track.name;
+    var track1 = tracks[trackOrder[trackIndex]];
+    var track2 = tracks[0];
+    var track3 = tracks[1];
   }
 
   return (
@@ -72,33 +73,73 @@ const App = () => {
         <img src={logo} className="App-logo" alt="logo" />
         <h1 className="App-title">Bienvenue sur le blind test de Noah</h1>
       </header>
-      <div className="App-images">
-        {tracks !== undefined && tracks[trackIndex] !== undefined && (
-          <AlbumCover track={tracks[trackIndex]} />
-        )}
-      </div>
-      <div className="App-buttons"></div>
-
       {tracks !== undefined && tracks[trackIndex] !== undefined ? (
         <div>
-          <audio src={tracks[trackIndex].track.preview_url} autoPlay controls />
-          <span>{tracks[trackIndex].track.name}</span>
+          <audio
+            src={tracks[trackOrder[trackIndex]].track.preview_url}
+            autoPlay
+            controls
+          />
+
+          <span>{tracks[trackOrder[trackIndex]].track.name}</span>
+
           <button onClick={goToNextTrack}>Next track</button>
-          <button
-            onClick={() => checkAnswer(track1, tracks[trackIndex]!.track.name)}
-          >
-            {track1}
-          </button>
-          <button
-            onClick={() => checkAnswer(track2, tracks[trackIndex]!.track.name)}
-          >
-            {track2}
-          </button>
-          <button
-            onClick={() => checkAnswer(track3, tracks[trackIndex]!.track.name)}
-          >
-            {track3}
-          </button>
+
+          <div className="App-choices">
+            <div className="App-choice">
+              <div className="App-images">
+                {tracks !== undefined && tracks[trackIndex] !== undefined && (
+                  <AlbumCover track={track1} />
+                )}
+              </div>
+              <button
+                onClick={() =>
+                  checkAnswer(
+                    track1.track.name,
+                    tracks[trackOrder[trackIndex]]!.track.name,
+                  )
+                }
+              >
+                {track1.track.name}
+              </button>
+            </div>
+
+            <div className="App-choice">
+              <div className="App-images">
+                {tracks !== undefined && tracks[trackIndex] !== undefined && (
+                  <AlbumCover track={track2} />
+                )}
+              </div>
+              <button
+                onClick={() =>
+                  checkAnswer(
+                    track2.track.name,
+                    tracks[trackOrder[trackIndex]]!.track.name,
+                  )
+                }
+              >
+                {track2.track.name}
+              </button>
+            </div>
+
+            <div className="App-choice">
+              <div className="App-images">
+                {tracks !== undefined && tracks[trackIndex] !== undefined && (
+                  <AlbumCover track={track3} />
+                )}
+              </div>
+              <button
+                onClick={() =>
+                  checkAnswer(
+                    track3.track.name,
+                    tracks[trackOrder[trackIndex]]!.track.name,
+                  )
+                }
+              >
+                {track3.track.name}
+              </button>
+            </div>
+          </div>
         </div>
       ) : (
         <div> Loading </div>
