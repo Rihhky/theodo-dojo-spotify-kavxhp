@@ -3,7 +3,7 @@ import './App.css';
 import { useState } from 'react';
 import { fetchTracks } from './lib/fetchTracks';
 import { useQuery } from '@tanstack/react-query';
-import { SavedTrack } from 'spotify-types';
+import { SavedTrack, Track } from 'spotify-types';
 import swal from 'sweetalert';
 
 const trackUrls = [
@@ -20,6 +20,7 @@ const AlbumCover = ({ track }: { track: SavedTrack }) => {
 };
 const App = () => {
   const [trackIndex, setTrackIndex] = useState(0);
+  const [trackOrder, setTrackOrder] = useState(arrayShuffle());
 
   const goToNextTrack = () => {
     setTrackIndex(trackIndex + 1);
@@ -37,13 +38,7 @@ const App = () => {
     queryFn: fetchTracks,
   });
 
-  if (tracks !== undefined && tracks[trackIndex] !== undefined) {
-    var track1 = tracks[trackIndex].track.name;
-    var track2 = tracks[0].track.name;
-    var track3 = tracks[1].track.name;
-  }
-
-  function arrayShuffle(a) {
+  const arrayShuffle = a => {
     var l = a.length,
       t,
       r;
@@ -55,10 +50,21 @@ const App = () => {
       a[r] = t;
     }
     return a;
-  }
+  };
 
-  arrayShuffle([1, 2, 3]);
-  // renvoie par exemple : [3, 1, 2]
+  const Numbers = n => {
+    var l = [];
+    for (var i = 0; i < n; i += 1) {
+      l.push(i);
+    }
+    return l;
+  };
+
+  if (tracks !== undefined && tracks[trackIndex] !== undefined) {
+    var track1 = tracks[trackIndex].track.name;
+    var track2 = tracks[0].track.name;
+    var track3 = tracks[1].track.name;
+  }
 
   return (
     <div className="App">
