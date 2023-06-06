@@ -18,6 +18,7 @@ const AlbumCover = ({ track }: { track: SavedTrack }) => {
   const src = track.track.album.images[0]!.url; // A changer ;)
   return <img src={src} style={{ width: 400, height: 400 }} />;
 };
+
 const App = () => {
   const [trackIndex, setTrackIndex] = useState(0);
 
@@ -27,7 +28,7 @@ const App = () => {
 
   const checkAnswer = (t1, t2) => {
     if (t1 == t2) {
-      swal('Bravo !', 'sous-titre', 'success');
+      swal('Bravo !', 'sous-titre', 'success').then(goToNextTrack);
     } else {
       swal('Raté !', 'Ceci est une alerte', 'error');
     }
@@ -59,12 +60,14 @@ const App = () => {
     return l;
   };
 
-  const [trackOrder, setTrackOrder] = useState(arrayShuffle(Numbers(20)));
+  const [trackOrder, setTrackOrder] = useState(arrayShuffle(Numbers(50)));
 
   if (tracks !== undefined && tracks[trackIndex] !== undefined) {
     var track1 = tracks[trackOrder[trackIndex]];
-    var track2 = tracks[0];
-    var track3 = tracks[1];
+    var track2 = tracks[Math.floor(Math.random() * 50)];
+    var track3 = tracks[Math.floor(Math.random() * 50)];
+    var choices = arrayShuffle([track1, track2, track3]);
+    console.log(tracks);
   }
 
   return (
@@ -81,62 +84,60 @@ const App = () => {
             controls
           />
 
-          <span>{tracks[trackOrder[trackIndex]].track.name}</span>
-
           <button onClick={goToNextTrack}>Next track</button>
 
           <div className="App-choices">
             <div className="App-choice">
               <div className="App-images">
                 {tracks !== undefined && tracks[trackIndex] !== undefined && (
-                  <AlbumCover track={track1} />
+                  <AlbumCover track={choices[0]} />
                 )}
               </div>
               <button
                 onClick={() =>
                   checkAnswer(
-                    track1.track.name,
+                    choices[0].track.name,
                     tracks[trackOrder[trackIndex]]!.track.name,
                   )
                 }
               >
-                {track1.track.name}
+                {choices[0].track.name}
               </button>
             </div>
 
             <div className="App-choice">
               <div className="App-images">
                 {tracks !== undefined && tracks[trackIndex] !== undefined && (
-                  <AlbumCover track={track2} />
+                  <AlbumCover track={choices[1]} />
                 )}
               </div>
               <button
                 onClick={() =>
                   checkAnswer(
-                    track2.track.name,
+                    choices[1].track.name,
                     tracks[trackOrder[trackIndex]]!.track.name,
                   )
                 }
               >
-                {track2.track.name}
+                {choices[1].track.name}
               </button>
             </div>
 
             <div className="App-choice">
               <div className="App-images">
                 {tracks !== undefined && tracks[trackIndex] !== undefined && (
-                  <AlbumCover track={track3} />
+                  <AlbumCover track={choices[2]} />
                 )}
               </div>
               <button
                 onClick={() =>
                   checkAnswer(
-                    track3.track.name,
+                    choices[2].track.name,
                     tracks[trackOrder[trackIndex]]!.track.name,
                   )
                 }
               >
-                {track3.track.name}
+                {choices[2].track.name}
               </button>
             </div>
           </div>

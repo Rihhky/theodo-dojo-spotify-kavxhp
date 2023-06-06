@@ -34,10 +34,11 @@
 .App-choice {
   display: flex;
   flex-direction: column;
+  margin-bottom: 5px;
 }
 
 .App-choices {
-  display:flex;
+  display: flex;
   flex-direction: row;
   justify-content: space-evenly;
 }
